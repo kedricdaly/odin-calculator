@@ -50,14 +50,19 @@ const verifyOperate = function() {
         switch (operators[ix]) {
             case '+':
                 testPassed = add(a, b) == 9
+                break;
             case '-':
-                testPassed = subtract(a, b) == -1;
+                testPassed = subtract(b, a) == -1;
+                break;
             case 'x': case '*':
                 testPassed = multiply(a, b) == 20;
+                break;
             case '÷': case '/':
-                testPassed = divide(a, b) == 1.2;
+                testPassed = divide(a, b) == 1.25;
+                break;
             case '%':
                 testPassed = modulo(a, b) == 1;
+                break;
             default:
                 
         }
