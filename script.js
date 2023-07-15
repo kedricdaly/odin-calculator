@@ -37,10 +37,14 @@ const operate = function(operator, a, b) {
     }
 };
 
+const getValidOperators = function() {
+    return ['+', '-', 'x', '*', '÷', '/', '%'];
+}
+
 const verifyOperate = function() {
     a = 5;
     b = 4;
-    operators = ['+', '-', 'x', '*', '÷', '/', '%'];
+    operators = getValidOperators();
 
     for (let ix in operators) {
         switch (operators[ix]) {
@@ -122,6 +126,7 @@ const evaluateCalc = function(e) {
 
 const parseDisplay = function(disp) {
     // how to protect against someone editing the DOM directly to include alphanumeric or other?
+    // can just evaluate to NaN
 
 };
 
@@ -144,8 +149,6 @@ const startUp = function() {
     const allClearKey = document.querySelector('#allClearKey')
     allClearKey.addEventListener('click', clearDisplay)
 
-
-
 };
 
 const initCalcState = function() {
@@ -156,6 +159,49 @@ const initCalcState = function() {
         a: '',
         b: ''
     };
+};
+
+/**
+ * 
+ * @param {Object[]} dict - Key-value pairs to change in updateCalc
+ *   possible keys: curOperator, curOperand, a, b
+ * @param {string} dict.curOperator - Must be one of ['+', '-', 'x', '*', '÷', '/', '%']
+ * @param {string} dict.curOperand - Must be 'a' or 'b'
+ * @param {(string|int|float)} dict.a - A value representing a number to be operated on
+ * @param {(string|int|float)} dict.b - A value representing a number to be operated on
+ */
+const updateCalcState = function(dict) {
+    // using a global, so be careful
+    for (key in dict) {
+        //console.log(`${key}: ${dict[key]}`)
+        if (isCalcStateKeyPairValid(key, dict[key])) {
+            calcState[key] = dict[key];
+        };
+    }
+};
+
+/**
+ * Returns if a calcState key-value pair is valid
+ * @param {string} key calcState parameters to check for validity
+ * @param {(string|int|float|enum)} value Parameter value to check for validity
+ * @returns {boolan} True if key-value pair is valid, false otherwise
+ */
+const isCalcStateKeyPairValid = function(key, value) {
+
+    switch (key) {
+        case 'curOperator':
+            if (getValidOperators().includes(value)) return true;
+            console.log(`Cannot update calcState with non-valid operator ${value}`)
+        case 'curOperand':
+            if (['a', 'b'].includes(value)) return true;
+            console.log(`Cannot update calcState with non-valid operand ${value}`)
+        case 'a': case 'b':
+            // could check they're int or string or float, but assume ok for now
+            return true;
+        default:
+            console.log(`Cannot update calcState with non-valid key ${key}`)
+    }
+    return false;
 };
 
 
