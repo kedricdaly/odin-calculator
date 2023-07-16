@@ -72,7 +72,7 @@ const verifyOperate = function() {
 };
 
 const updateCurrentDisplay = function(e) {
-    //console.log(e)
+
     const curDisplay = document.querySelector('.displayCurrent');
     curText = curDisplay.textContent;
     // prevent leading zeros
@@ -152,8 +152,8 @@ const clearHistoricDisplay = function(e) {
 };
 
 const clearDisplay = function(e) {
-    //console.log('clearDisplay:')
-    //console.log(e)
+
+    updateCalcState({curOperand: 'a'})
     clearCurrentDisplay()
     clearHistoricDisplay()
 };
