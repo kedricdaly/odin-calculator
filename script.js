@@ -72,6 +72,7 @@ const verifyOperate = function() {
 };
 
 const updateCurrentDisplay = function(e) {
+    //console.log(e)
     const curDisplay = document.querySelector('.displayCurrent');
     curText = curDisplay.textContent;
     // prevent leading zeros
@@ -80,35 +81,74 @@ const updateCurrentDisplay = function(e) {
     } else {
         curDisplay.textContent += e.target.textContent;
     };
+
+    // after a return, if user does not immediately select another operator
+    // we want to swap the current operand back to a from b
+    // curOperand should be empty, and both a: and b: should have values
+    // we should take the value from the curDisplay, and put it into a
+    // we should do this by setting the curOperand to a
+
+    let previousResult = (getCalcState('curOperator') === '')
+                         && (getCalcState('curOperand') === 'b')
+                         && (getCalcState('a') !== '')
+                         && (getCalcState('b') === '')
+    //console.log(`previousResult: ${previousResult}`)
+    if (previousResult) {
+
+        updateCalcState({curOperand: 'a'});
+        clearHistoricDisplay();
+    }
+
+
+    updateCalcState({
+        [getCalcState('curOperand')]: curDisplay.textContent
+    });
+
 };
 
 const updateHistoricDisplay = function(e) {
-    console.log('updateHistoricDisplay: ')
-    console.log(e)
     const histDisplay = document.querySelector('.displayHistory')
     const curDisplay = document.querySelector('.displayCurrent')
-    if (e.textContent === '=') {
-        // TODO: operate(operator, a, b)
-    }
-    calcState.curOperand = e.target.textContent;
-    calcState.a = curDisplay.textContent;
 
-    histDisplay.textContent = curDisplay.textContent + ' ' + e.target.textContent;
+    const startOperand = getCalcState('curOperand')
+    switch (startOperand) {
+        case 'a':
+            updateCalcState({
+                curOperand: 'b',
+                a: curDisplay.textContent,
+            });
+            histDisplay.textContent = curDisplay.textContent + ' ' + e.target.textContent;
+            break;
+        case 'b':
+            histDisplay.textContent = histDisplay.textContent + ' ' + e.target.textContent;
+            break;
+    }
+
+    
+    updateCalcState({curOperator: e.target.textContent})
+
+    
     clearCurrentDisplay();
 };
 
 const clearCurrentDisplay = function() {
     const curDisplay = document.querySelector('.displayCurrent');
     curDisplay.textContent = '';
+
+    updateCalcState({
+        [getCalcState('curOperand')]: curDisplay.textContent
+    });
 };
 
 const clearHistoricDisplay = function(e) {
     const histDisplay = document.querySelector('.displayHistory');
     histDisplay.textContent = '';
 
-    calcState.curOperator = '';
-    calcState.a = '';
-    calcState.b = '';
+    updateCalcState({
+        curOperator: '',
+        a: '',
+        b: '',
+    })
 };
 
 const clearDisplay = function(e) {
@@ -121,12 +161,33 @@ const clearDisplay = function(e) {
 const deleteCharFromCurrentDisplay = function(e) {
     const curDisplay = document.querySelector('.displayCurrent');
     curDisplay.textContent = curDisplay.textContent.slice(0,-1);
+
+    if (curDisplay.textContent === '') {
+        curDisplay.textContent = 0;
+    }
+
+    updateCalcState({
+        [getCalcState('curOperand')]: curDisplay.textContent
+    });
+
 };
 
 const evaluateCalc = function(e) {
     const curDisplay = document.querySelector('.displayCurrent');
-    // TODO: move curDisplay to historical display
-    // TODO: parse & evaluate expression
+    const histDisplay = document.querySelector('.displayHistory');
+    if (e.target.textContent === '=') {
+        // TODO: operate(operator, a, b)
+
+        curOperator = getCalcState('curOperator');
+        if (getValidOperators().includes(curOperator)) {
+            a = parseInt(getCalcState('a'));
+            b = parseInt(getCalcState('b'));
+            result = operate(curOperator, a, b);
+            histDisplay.textContent = result;
+            updateCalcState({curOperator: '', a: result, curOperand: 'b'});
+            clearCurrentDisplay();
+        }
+    }
 };
 
 const parseDisplay = function(disp) {
@@ -158,10 +219,15 @@ const startUp = function() {
 
 const initCalcState = function() {
     // returns a global calcState variable
+
+    curDisplay = document.querySelector('.displayCurrent');
+
+    curDisplay.textContent ? aValue = curDisplay.textContent : aValue = '';
+
     return calcState = {
         curOperator: '',
         curOperand: 'a',
-        a: '',
+        a: aValue,
         b: ''
     };
 };
@@ -195,19 +261,29 @@ const isCalcStateKeyPairValid = function(key, value) {
 
     switch (key) {
         case 'curOperator':
-            if (getValidOperators().includes(value)) return true;
+            if ([''].concat(getValidOperators()).includes(value)) return true;
             console.log(`Cannot update calcState with non-valid operator ${value}`)
+            break;
         case 'curOperand':
             if (['a', 'b'].includes(value)) return true;
             console.log(`Cannot update calcState with non-valid operand ${value}`)
+            break;
         case 'a': case 'b':
             // could check they're int or string or float, but assume ok for now
+            return true;
+        case '':
             return true;
         default:
             console.log(`Cannot update calcState with non-valid key ${key}`)
     }
     return false;
 };
+
+const getCalcState = function(thisParam) {
+    
+    return (['curOperator', 'curOperand', 'a', 'b'].includes(thisParam)) ? calcState[thisParam] : null;
+
+}
 
 
 //window.addEventListener('keydown', (e) => console.log(e))
