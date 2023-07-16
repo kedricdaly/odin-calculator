@@ -49,19 +49,19 @@ const verifyOperate = function() {
     for (let ix in operators) {
         switch (operators[ix]) {
             case '+':
-                testPassed = add(a, b) == 9
+                testPassed = operate('+', a, b) == 9
                 break;
             case '-':
-                testPassed = subtract(b, a) == -1;
+                testPassed = operate('-', b, a) == -1;
                 break;
             case 'x': case '*':
-                testPassed = multiply(a, b) == 20;
+                testPassed = operate('*', a, b) == 20;
                 break;
             case '÷': case '/':
-                testPassed = divide(a, b) == 1.25;
+                testPassed = operate('/', a, b) == 1.25;
                 break;
             case '%':
-                testPassed = modulo(a, b) == 1;
+                testPassed = operate('%', a, b) == 1;
                 break;
             default:
                 
