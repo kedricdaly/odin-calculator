@@ -180,8 +180,8 @@ const evaluateCalc = function(e) {
 
         curOperator = getCalcState('curOperator');
         if (getValidOperators().includes(curOperator)) {
-            a = parseInt(getCalcState('a'));
-            b = parseInt(getCalcState('b'));
+            a = parseFloat(getCalcState('a'));
+            b = parseFloat(getCalcState('b'));
             result = operate(curOperator, a, b);
             histDisplay.textContent = result;
             updateCalcState({curOperator: '', a: result, curOperand: 'b'});
