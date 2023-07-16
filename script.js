@@ -73,13 +73,20 @@ const verifyOperate = function() {
 
 const updateCurrentDisplay = function(e) {
 
+    let newText = e.target.textContent;
     const curDisplay = document.querySelector('.displayCurrent');
     curText = curDisplay.textContent;
     // prevent leading zeros
-    if (curDisplay.textContent === '' || curDisplay.textContent === '0') {
-            curDisplay.textContent = e.target.textContent;
+    //console.log(e.target.textContent)
+    if (curText === '' || curText === '0') {
+        if ((curText === '') && (newText === '.')) {
+            newText = '0.'; // add leading zero for solo decimal point
+        }
+            curDisplay.textContent = newText;
+    } else if ((curText.includes('.') && newText === '.')) {
+            // do not add an additional decimal point
     } else {
-        curDisplay.textContent += e.target.textContent;
+        curDisplay.textContent += newText;
     };
 
     // after a return, if user does not immediately select another operator
