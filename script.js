@@ -197,12 +197,6 @@ const evaluateCalc = function(e) {
     }
 };
 
-const parseDisplay = function(disp) {
-    // how to protect against someone editing the DOM directly to include alphanumeric or other?
-    // can just evaluate to NaN
-
-};
-
 const startUp = function() {
     const numBtns = Array.from(document.querySelectorAll('.numbers'))
     numBtns.forEach(btn => btn.addEventListener('click', updateCurrentDisplay))
