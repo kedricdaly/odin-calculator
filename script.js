@@ -165,7 +165,7 @@ const clearDisplay = function(e) {
     clearHistoricDisplay()
 };
 
-const deleteCharFromCurrentDisplay = function(e) {
+const deleteCharFromCurrentDisplay = function() {
     const curDisplay = document.querySelector('.displayCurrent');
     curDisplay.textContent = curDisplay.textContent.slice(0,-1);
 
@@ -179,8 +179,7 @@ const deleteCharFromCurrentDisplay = function(e) {
 
 };
 
-const evaluateCalc = function(e) {
-    const curDisplay = document.querySelector('.displayCurrent');
+const evaluateCalc = function() {
     const histDisplay = document.querySelector('.displayHistory');
 
     curOperator = getCalcState('curOperator');
@@ -197,11 +196,6 @@ const evaluateCalc = function(e) {
     updateCalcState({curOperator: '', a: result, curOperand: 'b'});
     clearCurrentDisplay();
 
-    if (e.target.textContent === '=') {
-        // TODO: operate(operator, a, b)
-
-        
-    };
 };
 
 const startUp = function() {
