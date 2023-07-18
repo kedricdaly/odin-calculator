@@ -38,7 +38,7 @@ const operate = function(operator, a, b) {
 };
 
 const getValidOperators = function() {
-    return ['+', '-', 'x', '*', '÷', '/', '%'];
+    return ['+', '-', 'x', 'X', '*', '÷', '/', '%'];
 }
 
 const verifyOperate = function() {
@@ -54,7 +54,7 @@ const verifyOperate = function() {
             case '-':
                 testPassed = operate('-', b, a) == -1;
                 break;
-            case 'x': case '*':
+            case 'x': case 'X': case '*':
                 testPassed = operate('*', a, b) == 20;
                 break;
             case '÷': case '/':
@@ -70,9 +70,18 @@ const verifyOperate = function() {
     }
 };
 
-const updateCurrentDisplay = function(e) {
+const getNewText = function(e) {
+    if (e.type == 'keydown') {
+        return e.key;
+    };
 
-    let newText = e.target.textContent;
+    if (e.type == 'click') {
+        return e.target.textContent;
+    };
+}
+
+const updateCurrentDisplay = function(e) {
+    newText = getNewText(e);
     const curDisplay = document.querySelector('.displayCurrent');
     curText = curDisplay.textContent;
 
@@ -113,8 +122,16 @@ const updateHistoricDisplay = function(e) {
     const histDisplay = document.querySelector('.displayHistory');
     const curDisplay = document.querySelector('.displayCurrent');
 
-    const isAlreadyOperator = getValidOperators().some(op => histDisplay.textContent.includes(op));
+    newText = getNewText(e);
 
+    // special handling required for negative numbers because they begin with '-' which is an operator
+    // TODO: does it make sense just to check the last char of histDisplay for an operator?
+    if (getCalcState('a') < 0) {
+        isAlreadyOperator = getValidOperators().some(op => histDisplay.textContent.slice(1).includes(op));
+    } else {
+        isAlreadyOperator = getValidOperators().some(op => histDisplay.textContent.includes(op));
+    }
+    
     // do not allow multiple operators to appear in histDisplay
     if (isAlreadyOperator) {
         histDisplay.textContent = histDisplay.textContent.slice(0,-1);
@@ -127,17 +144,17 @@ const updateHistoricDisplay = function(e) {
                 curOperand: 'b',
                 a: curDisplay.textContent,
             });
-            histDisplay.textContent = curDisplay.textContent + ' ' + e.target.textContent;
+            histDisplay.textContent = curDisplay.textContent + ' ' + newText;
             break;
         case 'b':
             if (getCalcState('curOperator')){
                 evaluateCalc();
             }
-            histDisplay.textContent = histDisplay.textContent + ' ' + e.target.textContent;
+            histDisplay.textContent = histDisplay.textContent + ' ' + newText;
             break;
     }
 
-    updateCalcState({curOperator: e.target.textContent})    
+    updateCalcState({curOperator: newText})    
     clearCurrentDisplay();
 };
 
@@ -201,10 +218,10 @@ const evaluateCalc = function() {
 };
 
 const startUp = function() {
-    const numBtns = Array.from(document.querySelectorAll('.numbers'));
+    const numBtns = Array.from(document.querySelectorAll('.numbers button'));
     numBtns.forEach(btn => btn.addEventListener('click', updateCurrentDisplay));
 
-    const opBtns = Array.from(document.querySelectorAll('.operators'));
+    const opBtns = Array.from(document.querySelectorAll('.operators button'));
     opBtns.forEach(btn => btn.addEventListener('click', updateHistoricDisplay));
 
     const clearKey = document.querySelector('#clearKey');
@@ -288,8 +305,46 @@ const getCalcState = function(thisParam) {
 
 };
 
+const getValidKeys = function() {
+    return [getValidNumKeys(), getValidOperators(), '=', 'Enter', 'Delete', 'Backspace'].flat();
+};
 
-//window.addEventListener('keydown', (e) => console.log(e))
+const getValidNumKeys = function() {
+    return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
+}
+
+const keyboardInput = function(e) {
+
+    const thisKey = e.key;
+
+    if (!getValidKeys().includes(thisKey)) {
+        return;
+    }
+
+    // prevent trying to search if '/' is pressed for divide
+    if (thisKey === '/') {
+        e.preventDefault();
+    };
+
+    if (getValidOperators().includes(thisKey)) {
+        updateHistoricDisplay(e);
+    };
+
+    if (getValidNumKeys().includes(thisKey)) {
+        updateCurrentDisplay(e);
+    };
+
+    if (thisKey === '=' || thisKey === 'Enter') {
+        evaluateCalc();
+    };
+
+    if (thisKey === 'Backspace' || thisKey === 'Delete') {
+        deleteCharFromCurrentDisplay();
+    };
+
+};
+
+window.addEventListener('keydown', (e) => keyboardInput(e))
 
 window.onload = startUp();
 calcState = initCalcState();
