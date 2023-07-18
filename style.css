@@ -1,0 +1,35 @@
+/* footer */
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer a {
+    display:flex;
+    flex: 0 1 auto;
+    flex-direction: row;
+    height: 2em;
+    margin-left: 0.5em;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--dark-default);
+    text-decoration: none;
+}
+
+.subfooter {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.github-icon {
+    height: 2em;
+}
+
+.footer a:hover {
+    transform: scale(1.1);
+}
