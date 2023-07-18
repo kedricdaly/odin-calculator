@@ -116,9 +116,9 @@ const updateCurrentDisplay = function(e) {
 const updateHistoricDisplay = function(e) {
     const histDisplay = document.querySelector('.displayHistory')
     const curDisplay = document.querySelector('.displayCurrent')
-    
+
     const isAlreadyOperator = getValidOperators().some(op => histDisplay.textContent.includes(op));
-    
+
     // do not allow multiple operators to appear in histDisplay
     if (isAlreadyOperator) {
         histDisplay.textContent = histDisplay.textContent.slice(0,-1)
@@ -134,6 +134,9 @@ const updateHistoricDisplay = function(e) {
             histDisplay.textContent = curDisplay.textContent + ' ' + e.target.textContent;
             break;
         case 'b':
+            if (getCalcState('curOperator')){
+                evaluateCalc();
+            }
             histDisplay.textContent = histDisplay.textContent + ' ' + e.target.textContent;
             break;
     }
