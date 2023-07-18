@@ -33,7 +33,7 @@ const operate = function(operator, a, b) {
         case '%':
             return modulo(a, b);
         default:
-            return null
+            return null;
     }
 };
 
@@ -68,7 +68,6 @@ const verifyOperate = function() {
         }
         testPassed ? console.log(`Test ${operators[ix]} passed`) : console.log(`Test ${operators[ix]} failed`)
     }
-
 };
 
 const updateCurrentDisplay = function(e) {
@@ -76,8 +75,8 @@ const updateCurrentDisplay = function(e) {
     let newText = e.target.textContent;
     const curDisplay = document.querySelector('.displayCurrent');
     curText = curDisplay.textContent;
+
     // prevent leading zeros
-    //console.log(e.target.textContent)
     if (curText === '' || curText === '0') {
         if ((curText === '') && (newText === '.')) {
             newText = '0.'; // add leading zero for solo decimal point
@@ -98,30 +97,27 @@ const updateCurrentDisplay = function(e) {
     let previousResult = (getCalcState('curOperator') === '')
                          && (getCalcState('curOperand') === 'b')
                          && (getCalcState('a') !== '')
-                         && (getCalcState('b') === '')
-    //console.log(`previousResult: ${previousResult}`)
-    if (previousResult) {
+                         && (getCalcState('b') === '');
 
+    if (previousResult) {
         updateCalcState({curOperand: 'a'});
         clearHistoricDisplay();
     }
 
-
     updateCalcState({
         [getCalcState('curOperand')]: curDisplay.textContent
     });
-
 };
 
 const updateHistoricDisplay = function(e) {
-    const histDisplay = document.querySelector('.displayHistory')
-    const curDisplay = document.querySelector('.displayCurrent')
+    const histDisplay = document.querySelector('.displayHistory');
+    const curDisplay = document.querySelector('.displayCurrent');
 
     const isAlreadyOperator = getValidOperators().some(op => histDisplay.textContent.includes(op));
 
     // do not allow multiple operators to appear in histDisplay
     if (isAlreadyOperator) {
-        histDisplay.textContent = histDisplay.textContent.slice(0,-1)
+        histDisplay.textContent = histDisplay.textContent.slice(0,-1);
     };
 
     const startOperand = getCalcState('curOperand')
@@ -141,10 +137,7 @@ const updateHistoricDisplay = function(e) {
             break;
     }
 
-    
-    updateCalcState({curOperator: e.target.textContent})
-
-    
+    updateCalcState({curOperator: e.target.textContent})    
     clearCurrentDisplay();
 };
 
@@ -169,10 +162,9 @@ const clearHistoricDisplay = function(e) {
 };
 
 const clearDisplay = function(e) {
-
-    updateCalcState({curOperand: 'a'})
-    clearCurrentDisplay()
-    clearHistoricDisplay()
+    updateCalcState({curOperand: 'a'});
+    clearCurrentDisplay();
+    clearHistoricDisplay();
 };
 
 const deleteCharFromCurrentDisplay = function() {
@@ -209,23 +201,23 @@ const evaluateCalc = function() {
 };
 
 const startUp = function() {
-    const numBtns = Array.from(document.querySelectorAll('.numbers'))
-    numBtns.forEach(btn => btn.addEventListener('click', updateCurrentDisplay))
+    const numBtns = Array.from(document.querySelectorAll('.numbers'));
+    numBtns.forEach(btn => btn.addEventListener('click', updateCurrentDisplay));
 
-    const opBtns = Array.from(document.querySelectorAll('.operators'))
-    opBtns.forEach(btn => btn.addEventListener('click', updateHistoricDisplay))
+    const opBtns = Array.from(document.querySelectorAll('.operators'));
+    opBtns.forEach(btn => btn.addEventListener('click', updateHistoricDisplay));
 
-    const clearKey = document.querySelector('#clearKey')
-    clearKey.addEventListener('click', clearCurrentDisplay)
+    const clearKey = document.querySelector('#clearKey');
+    clearKey.addEventListener('click', clearCurrentDisplay);
 
-    const delKey = document.querySelector('#deleteKey')
-    delKey.addEventListener('click', deleteCharFromCurrentDisplay)
+    const delKey = document.querySelector('#deleteKey');
+    delKey.addEventListener('click', deleteCharFromCurrentDisplay);
 
-    const eqKey = document.querySelector('#equalsKey')
-    eqKey.addEventListener('click', evaluateCalc)
+    const eqKey = document.querySelector('#equalsKey');
+    eqKey.addEventListener('click', evaluateCalc);
 
-    const allClearKey = document.querySelector('#allClearKey')
-    allClearKey.addEventListener('click', clearDisplay)
+    const allClearKey = document.querySelector('#allClearKey');
+    allClearKey.addEventListener('click', clearDisplay);
 
 };
 
@@ -256,7 +248,6 @@ const initCalcState = function() {
 const updateCalcState = function(dict) {
     // using a global, so be careful
     for (key in dict) {
-        //console.log(`${key}: ${dict[key]}`)
         if (isCalcStateKeyPairValid(key, dict[key])) {
             calcState[key] = dict[key];
         };
@@ -274,11 +265,11 @@ const isCalcStateKeyPairValid = function(key, value) {
     switch (key) {
         case 'curOperator':
             if ([''].concat(getValidOperators()).includes(value)) return true;
-            console.log(`Cannot update calcState with non-valid operator ${value}`)
+            console.log(`Cannot update calcState with non-valid operator ${value}`);
             break;
         case 'curOperand':
             if (['a', 'b'].includes(value)) return true;
-            console.log(`Cannot update calcState with non-valid operand ${value}`)
+            console.log(`Cannot update calcState with non-valid operand ${value}`);
             break;
         case 'a': case 'b':
             // could check they're int or string or float, but assume ok for now
@@ -286,7 +277,7 @@ const isCalcStateKeyPairValid = function(key, value) {
         case '':
             return true;
         default:
-            console.log(`Cannot update calcState with non-valid key ${key}`)
+            console.log(`Cannot update calcState with non-valid key ${key}`);
     }
     return false;
 };
@@ -295,7 +286,7 @@ const getCalcState = function(thisParam) {
     
     return (['curOperator', 'curOperand', 'a', 'b'].includes(thisParam)) ? calcState[thisParam] : null;
 
-}
+};
 
 
 //window.addEventListener('keydown', (e) => console.log(e))
