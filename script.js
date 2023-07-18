@@ -182,19 +182,26 @@ const deleteCharFromCurrentDisplay = function(e) {
 const evaluateCalc = function(e) {
     const curDisplay = document.querySelector('.displayCurrent');
     const histDisplay = document.querySelector('.displayHistory');
+
+    curOperator = getCalcState('curOperator');
+    if (!getValidOperators().includes(curOperator)) return;
+
+    a = parseFloat(getCalcState('a'));
+    if (isNaN(a)) return;
+
+    b = parseFloat(getCalcState('b'));
+    if (isNaN(b)) return;
+
+    result = operate(curOperator, a, b);
+    histDisplay.textContent = result;
+    updateCalcState({curOperator: '', a: result, curOperand: 'b'});
+    clearCurrentDisplay();
+
     if (e.target.textContent === '=') {
         // TODO: operate(operator, a, b)
 
-        curOperator = getCalcState('curOperator');
-        if (getValidOperators().includes(curOperator)) {
-            a = parseFloat(getCalcState('a'));
-            b = parseFloat(getCalcState('b'));
-            result = operate(curOperator, a, b);
-            histDisplay.textContent = result;
-            updateCalcState({curOperator: '', a: result, curOperand: 'b'});
-            clearCurrentDisplay();
-        }
-    }
+        
+    };
 };
 
 const startUp = function() {
