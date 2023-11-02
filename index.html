@@ -11,56 +11,51 @@
   
 </head>
 <body>
-    <div>
-        <div class="display">
-            <div class="displayHistory"></div>
-            <div class="displayCurrent">12345</div>
-        </div>
-        <div class="numbers">
-            <div><button class="num1">1</button></div>
-            <div><button class="num2">2</button></div>
-            <div><button class="num3">3</button></div>
-            <div><button class="num4">4</button></div>
-            <div><button class="num5">5</button></div>
-            <div><button class="num6">6</button></div>
-            <div><button class="num7">7</button></div>
-            <div><button class="num8">8</button></div>
-            <div><button class="num9">9</button></div>
-            <div><button class="num0">0</button></div>
-            <div><button class="num.">.</button></div>
-        </div>
-        <div class="operators">
-            <div><button class="operator1">+</button></div>
-            <div><button class="operator2">-</button></div>
-            <div><button class="operator3">x</button></div>
-            <div><button class="operator4">÷</button></div>
-            <div><button class="operator5">%</button></div>
-        </div>
-        <div class="equalsKey">
-            <div><button id="equalsKey">=</button></div>
-        </div>
-        <div class="clearKey">
-            <div><button id="clearKey">C</button></div>
-        </div>
-        <div class="deleteKey">
-            <div><button id="deleteKey">del</button></div>
-        </div>
-        <div class="allClearKey">
-            <div><button id="allClearKey">AC</button></div>
+    <div class="main">
+        <div class="calculator">
+            <div class="calc-grid-container">
+                <div class="display">
+                    <div class="displayHistory"></div>
+                    <div class="displayCurrent">0</div>
+                </div>
+                <div><button id="allClearKey">AC</button></div>
+                <div><button id="clearKey">C</button></div>
+                <div class="empty"></div>
+                <div><button class="operators operatorMod">%</button></div>
+                <div><button id="deleteKey">DEL</button></div>
+                <div class="empty"></div>
+                <div class="empty"></div>
+                <div><button class="operators operatorDiv">÷</button></div>
+                <div><button class="numbers num7">7</button></div>
+                <div><button class="numbers num8">8</button></div>
+                <div><button class="numbers num9">9</button></div>
+                <div><button class="operators operatorMult">x</button></div>
+                <div><button class="numbers num4">4</button></div>
+                <div><button class="numbers num5">5</button></div>
+                <div><button class="numbers num6">6</button></div>
+                <div><button class="operators operatorSubtract">-</button></div>
+                <div><button class="numbers num1">1</button></div>
+                <div><button class="numbers num2">2</button></div>
+                <div><button class="numbers num3">3</button></div>
+                <div><button class="operators operatorAdd">+</button></div>
+                <div><button class="numbers num0">0</button></div>
+                <div><button class="numbers num.">.</button></div>
+                <div class="equalsKey"><button id="equalsKey">=</button></div>
+            </div>
         </div>
     </div>
+    <footer class="footer">
+        <div class="subfooter">
+            <p>
+            Copyright ©
+            <script>
+                document.write(new Date().getFullYear())
+            </script>
+            </p>
+            <a href="https://github.com/kedricdaly/odin-calculator" target="_noopener">
+                <p>Kedric Daly</p>
+                <img class="github-icon" src="github-mark.png"></img>
+            </a>
+        </div>
+    </footer>
 </body>
-<footer class="footer">
-    <div class="subfooter">
-        <p>
-        Copyright ©
-        <script>
-            document.write(new Date().getFullYear())
-        </script>
-        </p>
-        <a href="https://github.com/kedricdaly/odin-calculator" target="_noopener">
-            <p>Kedric Daly</p>
-            <img class="github-icon" src="github-mark.png"></img>
-        </a>
-    </div>
-  </footer>
