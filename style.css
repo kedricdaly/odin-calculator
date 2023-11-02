@@ -1,9 +1,99 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(23, 87, 126);
+}
+
+.calculator {
+    background-color: rgba(242, 210, 169, 1);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(35, 35, 35, 0.35);
+    transform: scale(.75);
+}
+
+.calc-grid-container {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(6, 50px);
+    gap: 10px;
+}
+
+.calc-grid-container button {
+    cursor: pointer;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    outline: none;
+    color: white;
+    border: 0px;
+    background-color: rgb(229,149,114);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.75);
+}
+
+.operators {
+    background-color: rgb(38,148,171) !important;
+}
+
+#equalsKey {
+    background-color: rgb(77,190,223);
+}
+#allClearKey, #clearKey, #deleteKey {
+    background-color: rgb(234,112,112);
+}
+
+.display {
+    grid-column: 1 / -1;
+    background-color: rgb(75,146,167);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+    box-shadow: inset 0 0 15px rgb(70, 70, 70);
+    border-radius: 10px;
+    font-size: 2rem;
+}
+
+.displayHistory, .displayCurrent {
+    color: rgb(255,255,255);
+}
+
+.equalsKey {
+    grid-column: span 2;
+}
+
+button {
+    width: 100%;
+    height: 100%;
+}
+
 /* footer */
 .footer {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    color: white;
 }
 
 .footer a {

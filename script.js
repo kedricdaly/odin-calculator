@@ -218,10 +218,10 @@ const evaluateCalc = function() {
 };
 
 const startUp = function() {
-    const numBtns = Array.from(document.querySelectorAll('.numbers button'));
+    const numBtns = Array.from(document.querySelectorAll('button.numbers'));
     numBtns.forEach(btn => btn.addEventListener('click', updateCurrentDisplay));
 
-    const opBtns = Array.from(document.querySelectorAll('.operators button'));
+    const opBtns = Array.from(document.querySelectorAll('button.operators'));
     opBtns.forEach(btn => btn.addEventListener('click', updateHistoricDisplay));
 
     const clearKey = document.querySelector('#clearKey');
